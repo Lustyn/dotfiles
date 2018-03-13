@@ -10,3 +10,6 @@ feh --no-fehbg --bg-fill "$(< "${HOME}/.cache/wal/wal")" --bg-fill "$(< "${HOME}
 
 # Copy wallpaper to /usr/share/pixmaps for greeter
 sudo cp "$(< "${HOME}/.cache/wal/wal")" /usr/share/pixmaps/backgrounds/walcache
+
+# Update terminal color sequences
+cat $HOME/.cache/wal/sequences
