@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# -n tells `wal` to skip setting the wallpaper.
+wal -n $@ 
+
+# Restart dunst
+systemctl --user restart dunst
+
+# Set wallpaper with feh
+feh --no-fehbg --bg-fill "$(< "${HOME}/.cache/wal/wal")" --bg-fill "$(< "${HOME}/.cache/wal/wal")"
+
+# Copy wallpaper to /usr/share/pixmaps for greeter
+sudo cp "$(< "${HOME}/.cache/wal/wal")" /usr/share/pixmaps/backgrounds/walcache

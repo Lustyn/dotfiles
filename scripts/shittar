@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if (( $# < 2 ))
+then
+	echo "Usage: shittar <archive> <directory> [args]"
+	exit 1
+fi
+
+mkdir $2
+tar xvf $1 -C $2 ${@:3}
+cd $2

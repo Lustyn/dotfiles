@@ -1,0 +1,15 @@
+#!/usr/bin/env fish
+
+switch $argv
+case "to"
+    set input (echo "" | dmenu)
+    set translated (trans -b en:eo "$input")
+    set lower (string lower "$translated")
+    xdotool type "$lower"
+case "from"
+    set input (xclip -selection clipboard -o)
+    set translated (trans -b :en "$input")
+    set lower (string lower "$translated")
+    echo "$lower"
+    echo "$lower" | xclip -selection clipboard -i
+end

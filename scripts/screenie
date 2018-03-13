@@ -1,0 +1,55 @@
+#!/bin/bash 
+ 
+# Requirements: 
+# ============= 
+# requires: maim+slop or scrot, xdotool, xdpyinfo, xclip, jq, convert (imagemagick), curl 
+# optional: paplay, imgurbash2 
+ 
+upload_timeout=5
+screenshotter=maim # maim or scrot 
+ 
+capture_sound=~/sounds/camera.wav
+jpeg_convert_sound=~/sounds/FuckTheJpg.wav
+ 
+display=$(ps -u $(id -u) -o pid= | \
+    while read pid; do
+        cat /proc/$pid/environ 2>/dev/null | tr '\0' '\n' | grep '^DISPLAY=:'
+    done | grep -o ':[0-9]*' | sort -u)
+display_size=$(xdpyinfo | awk '/dimensions:/ { print $2; exit }')
+ 
+image_path=/tmp/$(date +"%Y%m%d-%H%M%S").png
+custom_name=$(basename $image_path | sed "s/.*\///" | sed "s/\..*//")
+ 
+case $screenshotter in
+    "maim")
+        case $1 in
+            "s") args="-x=$display -s" ;;
+            "u") args="-x=$display -i $(xdotool getactivewindow)" ;;
+            "m") args="-x=$display -g=$display_size+0+0" ;;
+            *) exit 1 ;;
+        esac
+ 
+        maim $image_path $args ;;
+    "scrot") scrot -$1 $image_path ;;
+    *) exit 1 ;;
+esac
+ 
+if [ ! -f $image_path ]; then
+	exit 1
+fi 
+ 
+if hash paplay 2>/dev/null; then
+	paplay $capture_sound & 2>/dev/null
+fi
+ 
+if [[ $(find $image_path -type f -size +1M 2>/dev/null) ]]; then
+	if hash paplay 2>/dev/null; then
+		paplay $jpeg_convert_sound & 2>/dev/null
+	fi
+ 
+	convert $image_path ${image_path%.*}.png
+	image_path=${image_path%.*}.png        
+fi
+
+#echo "$image_path" 
+/home/justyn/scripts/upload $image_path

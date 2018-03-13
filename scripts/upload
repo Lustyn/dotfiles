@@ -1,0 +1,12 @@
+#!/bin/bash 
+ 
+upload_url=$(cat $HOME/.shittydl/url)
+password=$(cat $HOME/.shittydl/password)
+ 
+customname=$(basename $1 | sed "s/.*\///" | sed "s/\..*//")
+ 
+upload_complete_sound=~/sounds/donesnd.wav
+ 
+curl -v -F "password=$password" -F "file=@$1" -F "custom_name=$customname" $upload_url | jq -r '.url' | tr -d '\040\011\012\015' | xclip -selection c
+ 
+if hash paplay 2>/dev/null; then paplay $upload_complete_sound 2>/dev/null & fi

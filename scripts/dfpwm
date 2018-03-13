@@ -1,0 +1,6 @@
+#!/bin/bash
+youtube-dl "$1" --extract-audio --audio-format wav --audio-quality 0 --output "tmp.%(ext)s"
+java -jar $HOME/bin/LionRay.jar tmp.wav tmp.dfpwm
+rm tmp.wav
+upload tmp.dfpwm
+rm tmp.dfpwm
