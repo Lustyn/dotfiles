@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/usr/bin/env bash 
  
 upload_url=$(cat $HOME/.shittydl/url)
 password=$(cat $HOME/.shittydl/password)
