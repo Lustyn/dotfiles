@@ -1,0 +1,12 @@
+#!/usr/bin/env fish
+set name (basename (status filename))
+
+if [ $argv[-1] ]
+	set file $argv[-1]
+else
+	echo "Usage: $name [options] <file>"
+end
+
+set type (file -b --mime-type $file)
+echo $type
+xclip -t $type $argv
