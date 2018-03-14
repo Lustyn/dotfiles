@@ -36,6 +36,7 @@ gaps inner 20
 
 # no window borders
 default_border pixel 1
+default_floating_border pixel 1
 
 # open a terminal
 bindsym $mod+Return exec kitty

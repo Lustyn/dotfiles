@@ -14,11 +14,11 @@ if [ $_flag_help ]; or [ (count $argv) = 0 ]
 		-h, --help: Prints this help menu.
 		-b, --screenshot-backend: Scrot-compatible backend to use for screenshots. This is auto-detected, prioritizing maim over scrot.
 		-f, --format: Image format. By default this will be png.
-		-q, --quality: Image compression quality, on a scale from 1 (worst/fast) to 10 (best/slow). By default this will be 1.
+		-q, --quality: Image compression quality, on a scale from 1 (worst/fast) to 10 (best/slow). By default this will be 1 for pngs, and 10 for jpgs.
 		upload, -u, --upload: Upload script which will be run after a successful screenshot and have the image path supplied to it as the last argument.
 
 		type: Type of screenshot to take.
-				s, selection r, region: Selects a region of the screen.
+				s, selection, r, region: Selects a region of the screen.
 				d, display, m, monitor: Captures all displays.
 				c, current, w, window: Captures the current window."
 	exit
@@ -49,7 +49,14 @@ end
 if [ $_flag_quality ]
 	set quality $_flag_quality
 else
-	set quality 1
+	switch $format
+	case png
+		set quality 1
+	case jpg
+		set quality 10
+	case '*'
+		set quality 1
+	end
 end
 
 if [ $_flag_upload ]
