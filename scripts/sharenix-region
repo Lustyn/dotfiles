@@ -1,0 +1,10 @@
+#!/usr/bin/env fish
+set img (mktemp /tmp/sharenix.XXXXXXXXXXXXXXXX.png)
+maim -us "$img"
+if [ (echo -n "$img" | wc -c) != "0" ]
+	set url (sharenix -q -m="f" "$img") 
+	echo -n "$url" | xclip -selection "clipboard"
+	notify-send -i "$HOME/.icons/sharex.png" \
+		"Screenshot Captured" \
+		"$url"
+end
