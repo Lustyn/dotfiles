@@ -179,9 +179,9 @@ exec_always setxkbmap -option 'compose:menu'
 exec compton
 
 # screenshot binds
-bindsym $mod+Ctrl+s exec --no-startup-id /home/justyn/scripts/sharenix-region
-bindsym $mod+Ctrl+c exec --no-startup-id /home/justyn/scripts/sharenix-window
-bindsym $mod+Ctrl+d exec --no-startup-id /home/justyn/scripts/sharenix-display
+bindsym $mod+Ctrl+s exec --no-startup-id /home/justyn/scripts/screenie s upload
+bindsym $mod+Ctrl+c exec --no-startup-id /home/justyn/scripts/screenie c upload
+bindsym $mod+Ctrl+d exec --no-startup-id /home/justyn/scripts/screenie d upload
 
 # quick translation bindings
 bindsym $mod+Ctrl+e exec --no-startup-id /home/justyn/scripts/esperanto to

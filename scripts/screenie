@@ -1,55 +1,102 @@
-#!/usr/bin/env bash
- 
-# Requirements: 
-# ============= 
-# requires: maim+slop or scrot, xdotool, xdpyinfo, xclip, jq, convert (imagemagick), curl 
-# optional: paplay, imgurbash2 
- 
-upload_timeout=5
-screenshotter=maim # maim or scrot 
- 
-capture_sound=~/sounds/camera.wav
-jpeg_convert_sound=~/sounds/FuckTheJpg.wav
- 
-display=$(ps -u $(id -u) -o pid= | \
-    while read pid; do
-        cat /proc/$pid/environ 2>/dev/null | tr '\0' '\n' | grep '^DISPLAY=:'
-    done | grep -o ':[0-9]*' | sort -u)
-display_size=$(xdpyinfo | awk '/dimensions:/ { print $2; exit }')
- 
-image_path=/tmp/$(date +"%Y%m%d-%H%M%S").png
-custom_name=$(basename $image_path | sed "s/.*\///" | sed "s/\..*//")
- 
-case $screenshotter in
-    "maim")
-        case $1 in
-            "s") args="-x=$display -s" ;;
-            "u") args="-x=$display -i $(xdotool getactivewindow)" ;;
-            "m") args="-x=$display -g=$display_size+0+0" ;;
-            *) exit 1 ;;
-        esac
- 
-        maim $image_path $args ;;
-    "scrot") scrot -$1 $image_path ;;
-    *) exit 1 ;;
-esac
- 
-if [ ! -f $image_path ]; then
-	exit 1
-fi 
- 
-if hash paplay 2>/dev/null; then
-	paplay $capture_sound & 2>/dev/null
-fi
- 
-if [[ $(find $image_path -type f -size +1M 2>/dev/null) ]]; then
-	if hash paplay 2>/dev/null; then
-		paplay $jpeg_convert_sound & 2>/dev/null
-	fi
- 
-	convert $image_path ${image_path%.*}.png
-	image_path=${image_path%.*}.png        
-fi
+#!/usr/bin/env fish
+set name (basename (status filename))
+set -l argv $argv
 
-#echo "$image_path" 
-/home/justyn/scripts/upload $image_path
+set -l options (fish_opt --short=h --long=help)
+set options $options (fish_opt --short=b --long=screenshot-backend --required)
+set options $options (fish_opt --short=f --long=format --required)
+set options $options (fish_opt --short=q --long=quality --required)
+set options $options (fish_opt --short=u --long=upload --required)
+argparse $options -- $argv; or set _flag_help true
+
+if [ $_flag_help ]; or [ (count $argv) = 0 ]
+	echo "Usage: $name [-hbfqu] <type> [upload]
+		-h, --help: Prints this help menu.
+		-b, --screenshot-backend: Scrot-compatible backend to use for screenshots. This is auto-detected, prioritizing maim over scrot.
+		-f, --format: Image format. By default this will be png.
+		-q, --quality: Image compression quality, on a scale from 1 (worst/fast) to 10 (best/slow). By default this will be 1.
+		upload, -u, --upload: Upload script which will be run after a successful screenshot and have the image path supplied to it as the last argument.
+
+		type: Type of screenshot to take.
+				s, selection r, region: Selects a region of the screen.
+				d, display, m, monitor: Captures all displays.
+				c, current, w, window: Captures the current window."
+	exit
+end
+
+set type $argv[1]
+set -e argv[1]
+
+if [ $_flag_screenshot-backend ]
+	set screenshotter $_flag_screenshot-backend
+else
+	if [ (command -v maim) ]
+		set screenshotter maim
+	else if [ (command -v scrot) ]
+		set screenshotter scrot
+	else
+		echo "Screenshot backend could not be found. (Install maim or scrot)"
+		exit 1
+	end
+end
+
+if [ $_flag_format ]
+	set format $_flag_format
+else
+	set format png
+end
+
+if [ $_flag_quality ]
+	set quality $_flag_quality
+else
+	set quality 1
+end
+
+if [ $_flag_upload ]
+	set upload $_flag_upload
+else if [ (count $argv) != 0 ]
+	set upload $argv
+end
+
+function temp
+	echo /tmp/$name.(date +%Y%m%d-%H%M%S).$format
+end
+
+function region
+	eval $screenshotter -usm $quality $argv[1]
+end
+functions -c region r
+functions -c region selection
+functions -c region s
+
+function display
+	eval $screenshotter -um $quality $argv[1]
+end
+functions -c display d
+functions -c display monitor
+functions -c display m
+
+function current
+	eval $screenshotter -ui (xdotool getactivewindow) -m $quality $argv[1]
+end
+functions -c current c
+functions -c current window
+functions -c current w
+
+switch $type
+case region r selection s display d monitor m current c window w
+	set img (temp)
+	eval $type $img
+	if [ (cat $img | wc -c) != "0" ]
+		if [ $upload ]
+			eval $upload $img
+		else
+			echo $img
+		end
+	else
+		echo "Screenshot failed."
+		exit 1
+	end
+case '*'
+	echo "Unknown screenshot type: $type"
+end
