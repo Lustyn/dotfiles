@@ -1,0 +1,12 @@
+.profile
+.bash_profile
+.bashrc
+.Xresources
+.cows/
+.config/fish/config.fish
+.config/dunst/dunstrc
+.config/i3/config
+.config/polybar/
+.config/kitty/kitty.conf
+.config/wal/templates/
+scripts/
