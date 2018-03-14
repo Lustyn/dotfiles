@@ -2,7 +2,7 @@
 set $mod Mod4
 
 # font used for everything
-font pango:FiraCode Nerd Font 12
+font pango:FuraCode Nerd Font 12
 
 # Set colors from Xresources
 # Change 'color7' and 'color2' to whatever colors you want i3 to use 
@@ -44,7 +44,7 @@ bindsym $mod+Return exec kitty
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -fn "FiraCode Nerd Font 12" -nb "$bg" -nf "$primary" -sb "$primary" -sf "$bg" -p "run:"
+bindsym $mod+d exec dmenu_run -fn "FuraCode Nerd Font 12" -nb "$bg" -nf "$primary" -sb "$primary" -sf "$bg" -p "run:"
 
 # change focus
 bindsym $mod+j focus left
