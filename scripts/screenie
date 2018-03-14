@@ -66,7 +66,7 @@ else if [ (count $argv) != 0 ]
 end
 
 function temp
-	echo /tmp/$name.(date +%Y%m%d-%H%M%S).$format
+	echo -n /tmp/$name.(date +%Y%m%d-%H%M%S).$format
 end
 
 function region
@@ -98,7 +98,7 @@ case region r selection s display d monitor m current c window w
 		if [ $upload ]
 			eval $upload $img
 		else
-			echo $img
+			echo -n $img
 		end
 	else
 		echo "Screenshot failed."
