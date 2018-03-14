@@ -158,7 +158,7 @@
     ### Icons ###
 
     # Align icons left/right/off
-    icon_position = off
+    icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
     max_icon_size = 32
@@ -178,7 +178,7 @@
     ### Misc/Advanced ###
 
     # dmenu path.
-    dmenu = /usr/bin/dmenu -p dunst:
+    dmenu = /usr/bin/dmenu -fn "FiraCode Nerd Font 12" -nb "{color0}" -nf "{color1}" -sb "{color1}" -sf "{color0}" -p dunst:
 
     # Browser for opening urls in context menu.
     browser = /usr/bin/firefox -new-tab
