@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+LD_PRELOAD=/usr/local/lib/libcwiid.so wminput $@
