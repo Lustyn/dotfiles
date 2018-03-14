@@ -1,8 +1,11 @@
 #!/usr/bin/env fish
+set primary (xgetres dmenu.color1)
+set fg (xgetres dmenu.color7)
+set bg (xgetres dmenu.color0)
 
 switch $argv
 case "to"
-    set input (echo "" | dmenu)
+    set input (echo "" | dmenu -fn "FuraCode Nerd Font 12" -nb "$bg" -nf "$primary" -sb "$primary" -sf "$bg" -p "esperanto:")
     set translated (trans -b en:eo "$input")
     set lower (string lower "$translated")
     xdotool type "$lower"
