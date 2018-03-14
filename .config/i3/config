@@ -4,6 +4,24 @@ set $mod Mod4
 # font used for everything
 font pango:FiraCode Nerd Font 12
 
+# Set colors from Xresources
+# Change 'color7' and 'color2' to whatever colors you want i3 to use 
+# from the generated scheme.
+# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
+# it fails to get colors from Xresources.
+set_from_resource $primary i3wm.color1 #f0f0f0
+set_from_resource $fg i3wm.color7 #f0f0f0
+set_from_resource $bg i3wm.color0 #f0f0f0
+
+# class                 border  backgr. text indicator child_border
+client.focused          $fg     $fg     $bg  $fg       $fg
+client.focused_inactive $bg     $bg     $fg  $bg       $bg
+client.unfocused        $bg     $bg     $fg  $bg       $bg
+client.urgent           $bg     $bg     $fg  $bg       $bg
+client.placeholder      $bg     $bg     $fg  $bg       $bg
+
+client.background       $bg
+
 # key to move floating windows
 floating_modifier $mod
 
@@ -26,7 +44,7 @@ bindsym $mod+Return exec kitty
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -nb "#000000" -nf "$fg" -sb "$fg" -sf "#000000"
+bindsym $mod+d exec dmenu_run -fn "FiraCode Nerd Font 12" -nb "$bg" -nf "$primary" -sb "$primary" -sf "$bg" -p "run:"
 
 # change focus
 bindsym $mod+j focus left
@@ -111,6 +129,9 @@ bindsym $mod+Ctrl+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
+# exit i3
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -145,9 +166,9 @@ exec_always setxkbmap -option 'compose:menu'
 exec compton
 
 # screenshot binds
-bindsym $mod+Ctrl+s exec --no-startup-id /home/justyn/scripts/screenie s
-bindsym $mod+Ctrl+c exec --no-startup-id /home/justyn/scripts/screenie u
-bindsym $mod+Ctrl+d exec --no-startup-id /home/justyn/scripts/screenie m
+bindsym $mod+Ctrl+s exec --no-startup-id /home/justyn/scripts/sharenix-region
+bindsym $mod+Ctrl+c exec --no-startup-id /home/justyn/scripts/sharenix-window
+bindsym $mod+Ctrl+d exec --no-startup-id /home/justyn/scripts/sharenix-display
 
 # quick translation bindings
 bindsym $mod+Ctrl+e exec --no-startup-id /home/justyn/scripts/esperanto to
@@ -163,22 +184,11 @@ exec_always --no-startup-id /home/justyn/.config/polybar/launch.sh
 # run wal
 exec --no-startup-id /home/justyn/scripts/mywal -R
 
+for_window [class="Firefox"] move container to workspace 2
+
+for_window [class="discord"] move container to workspace 4
+
+for_window [class="Spotify"] move container to workspace 6
+
 # prevent CCEmuX from tiling
 for_window [title="CCEmuX.*"] floating enable 
-
-# Set colors from Xresources
-# Change 'color7' and 'color2' to whatever colors you want i3 to use 
-# from the generated scheme.
-# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
-# it fails to get colors from Xresources.
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $bg i3wm.color2 #f0f0f0
-
-# class                 border  backgr. text indicator child_border
-client.focused          $fg     $fg     $bg  $fg       $fg
-client.focused_inactive $bg     $bg     $fg  $bg       $bg
-client.unfocused        $bg     $bg     $fg  $bg       $bg
-client.urgent           $bg     $bg     $fg  $bg       $bg
-client.placeholder      $bg     $bg     $fg  $bg       $bg
-
-client.background       $bg
