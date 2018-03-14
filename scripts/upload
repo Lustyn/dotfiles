@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 set img $argv
-set url (sharenix -q -m="f" $img) 
+aplay $HOME/.screenie/capture.wav &
+set url (sharenix -q -m="f" $img)
+aplay $HOME/.screenie/complete.wav &
 echo -n "$url" | xclip -selection "clipboard"
-notify-send -i "$HOME/.icons/sharex.png" \
-	"File Uploaded" \
-	"$url"
+notify-send -i "$HOME/.screenie/sharex.png" "File Uploaded" "$url"

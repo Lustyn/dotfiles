@@ -10,3 +10,4 @@
 .config/kitty/kitty.conf
 .config/wal/templates/
 scripts/
+.screenie/
