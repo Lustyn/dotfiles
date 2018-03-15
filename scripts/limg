@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+set name (mktemp /tmp/montage.XXXXXXXXX.png)
+montage -tile 7x1 -label '%f' -background none -font "Fura-Code-Regular-Nerd-Font-Complete" -pointsize 12 -fill white *.{jpg,png,gif} $name
+img $name
