@@ -49,14 +49,7 @@ end
 if [ $_flag_quality ]
 	set quality $_flag_quality
 else
-	switch $format
-	case png
-		set quality 1
-	case jpg
-		set quality 10
-	case '*'
-		set quality 1
-	end
+	set quality 10
 end
 
 if [ $_flag_upload ]
