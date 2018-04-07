@@ -11,3 +11,4 @@
 .config/wal/templates/
 scripts/
 .screenie/
+.vimrc

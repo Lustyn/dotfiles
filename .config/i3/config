@@ -26,13 +26,13 @@ client.background       $bg
 floating_modifier $mod
 
 # smart gaps
-smart_gaps on
+#smart_gaps on
 
 # outer gaps
-gaps outer 20
+#gaps outer 20
 
 # inner gaps
-gaps inner 20
+#gaps inner 20
 
 # no window borders
 default_border pixel 1
@@ -194,6 +194,9 @@ bindsym $mod+Shift+t exec --no-startup-id compton -b
 
 # launch polybar
 exec_always --no-startup-id /home/justyn/.config/polybar/launch.sh
+
+# launch polkit-gnome
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 # run wal
 exec --no-startup-id /home/justyn/scripts/mywal -R

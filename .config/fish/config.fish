@@ -1,4 +1,4 @@
-set -g theme_color_scheme base16
+set -g theme_color_scheme terminal-light-black
 set -g theme_nerd_fonts yes
 set -g theme_display_date no
 
