@@ -1,0 +1,6 @@
+#!/usr/bin/env bash 
+area="7163 0 15200 4398"
+transformationMatrix="1 0 0 0 1 0 0 0 1"
+tablet=$(xsetwacom --list devices | grep STYLUS | egrep -o 'id: [0-9]+' | awk '{print $2}')
+xsetwacom --set $tablet Area "$area"
+xinput set-prop $tablet --type=float "Coordinate Transformation Matrix" $transformationMatrix

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+cd ~/R3Air
+wine R3Air.exe
